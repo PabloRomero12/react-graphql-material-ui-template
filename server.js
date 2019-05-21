@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "variables.env" });
 
@@ -29,6 +30,13 @@ mongoose
 
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+
 // Connect schemas to GraphQL
 app.use(
   "/graphql",
@@ -41,18 +49,6 @@ app.use(
     }
   })
 );
-/*
-app.use(
-  "graphql",
-  graphqlExpress({
-    schema,
-    context: {
-      Recipe,
-      User
-    }
-  })
-);
-*/
 
 const PORT = process.env.PORT || 4444;
 
