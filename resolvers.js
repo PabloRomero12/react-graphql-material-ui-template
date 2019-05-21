@@ -29,7 +29,7 @@ exports.resolvers = {
 
       return newRecipe;
     },
-    signupUser: async (root, { username, email, password }, { User }) => {
+    signupUser: async (parent, { username, email, password }, { User }) => {
       const user = await User.findOne({ username });
       if (user) {
         throw new Error("User already exists");
