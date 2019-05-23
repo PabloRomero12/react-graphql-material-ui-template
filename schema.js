@@ -5,6 +5,7 @@ type Recipe{
     category: String!
     description:String!
     instructions:String!
+    picture:String
     createdDate:String
     likes: Int
     username: String
@@ -37,6 +38,7 @@ type Mutation{
         description:String!,
         category:String!,
         instructions:String!,
+        picture:String,
         username:String
     ) : Recipe
 

@@ -60,7 +60,7 @@ const Root = ({ refetch, session }) => (
         <Route path="/search" render={() => <Search refetch={refetch} />} />
         <Route
           path="/recipe/add"
-          render={() => <AddRecipe refetch={refetch} />}
+          render={() => <AddRecipe refetch={refetch} session={session} />}
         />
         <Route
           path="/recipes/:_id"
