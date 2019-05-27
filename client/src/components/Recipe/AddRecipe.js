@@ -16,7 +16,7 @@ import Error from "../Auth/Error";
 
 import { Mutation } from "react-apollo";
 
-import { ADD_RECIPE } from "../../queries";
+import { ADD_RECIPE, GET_ALL_RECIPES } from "../../queries";
 
 const styles = theme => ({
   appBar: {
@@ -107,7 +107,8 @@ class AddRecipe extends React.Component {
     addRecipe()
       .then(({ data }) => {
         this.clearInputs();
-        this.props.history.push(`/recipes/${data.addRecipe._id}`);
+        //this.props.history.push(`/recipes/${data.addRecipe._id}`);
+        this.props.history.push("/");
       })
       .catch(err => {
         console.log(err.message);
@@ -116,6 +117,17 @@ class AddRecipe extends React.Component {
 
   clearInputs = () => {
     this.setState({ ...initialState });
+  };
+
+  updateCache = (proxy, { data: { addRecipe } }) => {
+    const { getAllRecipes } = proxy.readQuery({ query: GET_ALL_RECIPES });
+
+    proxy.writeQuery({
+      query: GET_ALL_RECIPES,
+      data: {
+        getAllRecipes: [addRecipe, ...getAllRecipes]
+      }
+    });
   };
 
   render() {
@@ -133,6 +145,7 @@ class AddRecipe extends React.Component {
               category: this.state.category,
               instructions: this.state.instructions
             }}
+            update={this.updateCache}
           >
             {(addRecipe, { data, loading, error }) => {
               return (

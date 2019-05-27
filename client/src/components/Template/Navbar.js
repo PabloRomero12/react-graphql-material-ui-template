@@ -54,7 +54,7 @@ const NavbarAuth = ({ session }) => (
     </Button>
 
     <Button component={NavLink} to="/recipe/add" color="inherit">
-      Search
+      Add Recipe
     </Button>
 
     <Button component={NavLink} to="/profile" color="inherit">

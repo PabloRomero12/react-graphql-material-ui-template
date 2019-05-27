@@ -24,12 +24,16 @@ import {
 
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
+import { InMemoryCache } from "apollo-cache-inmemory";
+
+const cache = new InMemoryCache();
 
 const client = new ApolloClient({
   uri: "http://localhost:4444/graphql",
   fetchOptions: {
     credentials: "include"
   },
+  cache,
   request: operation => {
     const token = localStorage.getItem("token");
     operation.setContext({
