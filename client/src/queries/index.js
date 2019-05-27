@@ -74,6 +74,7 @@ export const GET_RECIPE = gql`
       picture
       createdDate
       likes
+      username
     }
   }
 `;

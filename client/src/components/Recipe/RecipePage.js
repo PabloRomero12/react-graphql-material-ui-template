@@ -4,21 +4,14 @@ import { Query } from "react-apollo";
 
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import classnames from "classnames";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
+import Grid from "@material-ui/core/Grid";
 import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import red from "@material-ui/core/colors/red";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 import { GET_RECIPE } from "../../queries";
 
@@ -26,7 +19,8 @@ const styles = theme => ({
   root: {
     display: "flex",
     justifyContent: "center",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    paddingTop: "50"
   },
   card: {
     maxWidth: "400"
@@ -71,54 +65,51 @@ class RecipePage extends React.Component {
           const { getRecipe } = data;
           return (
             <div className={classes.root}>
-              <Card className={classes.card}>
-                <CardHeader
-                  avatar={
-                    <Avatar aria-label="Recipe" className={classes.avatar}>
-                      R
-                    </Avatar>
-                  }
-                  action={
-                    <IconButton>
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                  title={getRecipe.name}
-                  subheader={getRecipe.createdDate}
-                />
-                <CardMedia
-                  className={classes.media}
-                  image={getRecipe.picture}
-                  title={getRecipe.name}
-                />
-                <CardContent>
-                  <Typography component="p">{getRecipe.description}</Typography>
-                </CardContent>
-                <CardActions className={classes.actions} disableActionSpacing>
-                  <IconButton aria-label="Add to favorites">
-                    <FavoriteIcon />
-                  </IconButton>
-                  <IconButton aria-label="Share">
-                    <ShareIcon />
-                  </IconButton>
-                  <IconButton
-                    className={classnames(classes.expand, {
-                      [classes.expandOpen]: this.state.expanded
-                    })}
-                    onClick={this.handleExpandClick}
-                    aria-expanded={this.state.expanded}
-                    aria-label="Show more"
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
-                </CardActions>
-                <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                  <CardContent>
-                    <Typography paragraph>Instructions:</Typography>
-                    <Typography paragraph>{getRecipe.instructions}</Typography>
-                  </CardContent>
-                </Collapse>
-              </Card>
+              <Grid container spacing={24}>
+                <Grid item xs={false} md={2} />
+                <Grid item xs={12} md={5}>
+                  <Grid container spacing={0}>
+                    <Grid item xs={12}>
+                      <Avatar aria-label="Recipe" className={classes.avatar}>
+                        {getRecipe.name[0]}
+                      </Avatar>
+                      <span>
+                        <Typography variant="h4">{getRecipe.name}</Typography>
+                      </span>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <CardMedia
+                        className={classes.media}
+                        image={getRecipe.picture}
+                        title={getRecipe.name}
+                      />
+                      <Typography component="p">
+                        {getRecipe.description}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle2">
+                        {getRecipe.username}
+                      </Typography>
+                      <Typography variant="subtitle2">
+                        {getRecipe.createdDate}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <IconButton aria-label="Add to favorites">
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton aria-label="Share">
+                        <ShareIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <Typography variant="h6">Instructions:</Typography>
+                  <Typography paragraph>{getRecipe.instructions}</Typography>
+                </Grid>
+              </Grid>
             </div>
           );
         }}
