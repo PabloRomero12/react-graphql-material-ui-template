@@ -70,7 +70,10 @@ const Root = ({ refetch, session }) => (
           path="/recipes/:_id"
           render={() => <RecipePage refetch={refetch} />}
         />
-        <Route path="/profile" render={() => <Profile refetch={refetch} />} />
+        <Route
+          path="/profile"
+          render={() => <Profile refetch={refetch} session={session} />}
+        />
         <Redirect to="/" />
       </Switch>
     </Fragment>

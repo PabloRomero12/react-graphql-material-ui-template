@@ -25,77 +25,92 @@ const styles = {
   }
 };
 
-const NavbarUnAuth = () => (
-  <div>
-    <Button component={NavLink} to="/" color="inherit">
-      Home
-    </Button>
-    <Button component={NavLink} to="/search" color="inherit">
-      Search
-    </Button>
-    <Button component={NavLink} to="/signup" color="inherit">
-      Sign Up
-    </Button>
+const CustomNavLink = React.forwardRef((props, ref) => (
+  <NavLink innerRef={ref} {...props} />
+));
 
-    <Button component={NavLink} to="/signin" color="inherit">
-      Sign In
-    </Button>
-  </div>
-);
+class NavbarUnAuth extends React.Component {
+  render() {
+    return (
+      <div>
+        <Button component={CustomNavLink} to="/" color="inherit">
+          Home
+        </Button>
+        <Button component={CustomNavLink} to="/search" color="inherit">
+          Search
+        </Button>
+        <Button component={CustomNavLink} to="/signup" color="inherit">
+          Sign Up
+        </Button>
 
-const NavbarAuth = ({ session }) => (
-  <div>
-    <Button component={NavLink} to="/" color="inherit">
-      Home
-    </Button>
+        <Button component={CustomNavLink} to="/signin" color="inherit">
+          Sign In
+        </Button>
+      </div>
+    );
+  }
+}
 
-    <Button component={NavLink} to="/search" color="inherit">
-      Search
-    </Button>
+class NavbarAuth extends React.Component {
+  render() {
+    const { session } = this.props;
+    return (
+      <div>
+        <Button component={CustomNavLink} to="/" color="inherit">
+          Home
+        </Button>
 
-    <Button component={NavLink} to="/recipe/add" color="inherit">
-      Add Recipe
-    </Button>
+        <Button component={CustomNavLink} to="/search" color="inherit">
+          Search
+        </Button>
 
-    <Button component={NavLink} to="/profile" color="inherit">
-      Profile
-    </Button>
+        <Button component={CustomNavLink} to="/recipe/add" color="inherit">
+          Add Recipe
+        </Button>
 
-    <Signout />
+        <Button component={CustomNavLink} to="/profile" color="inherit">
+          Profile
+        </Button>
 
-    <Typography color="secondary">
-      Welcome, {session.getCurrentUser.username}
-    </Typography>
-  </div>
-);
+        <Signout />
 
-const Navbar = props => {
-  const { classes, session } = props;
+        <Typography color="secondary">
+          Welcome, {session.getCurrentUser.username}
+        </Typography>
+      </div>
+    );
+  }
+}
 
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="Menu"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            Recipes
-          </Typography>
-          {session && session.getCurrentUser ? (
-            <NavbarAuth session={session} />
-          ) : (
-            <NavbarUnAuth />
-          )}
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-};
+class Navbar extends React.Component {
+  render() {
+    const { classes, session } = this.props;
+
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Menu"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" className={classes.grow}>
+              Recipes
+            </Typography>
+            {session && session.getCurrentUser ? (
+              <NavbarAuth session={session} />
+            ) : (
+              <NavbarUnAuth />
+            )}
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
 
 Navbar.propTypes = {
   classes: PropTypes.object.isRequired
