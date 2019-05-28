@@ -20,7 +20,7 @@ const styles = theme => ({
     display: "flex",
     justifyContent: "center",
     flexWrap: "wrap",
-    paddingTop: "50"
+    marginTop: theme.spacing(2)
   },
   card: {
     maxWidth: "400"
@@ -47,6 +47,13 @@ const styles = theme => ({
   }
 });
 
+const formatDate = date => {
+  date = parseInt(date);
+  const newDate = new Date(date).toLocaleDateString();
+  const newTime = new Date(date).toLocaleTimeString();
+  return `${newDate} at ${newTime}`;
+};
+
 class RecipePage extends React.Component {
   state = { expanded: false };
   handleExpandClick = () => {
@@ -65,7 +72,7 @@ class RecipePage extends React.Component {
           const { getRecipe } = data;
           return (
             <div className={classes.root}>
-              <Grid container spacing={24}>
+              <Grid container spacing={4}>
                 <Grid item xs={false} md={2} />
                 <Grid item xs={12} md={5}>
                   <Grid container spacing={0}>
@@ -89,10 +96,10 @@ class RecipePage extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                       <Typography variant="subtitle2">
-                        {getRecipe.username}
+                        {`Created by: ${getRecipe.username}`}
                       </Typography>
                       <Typography variant="subtitle2">
-                        {getRecipe.createdDate}
+                        {`Create at: ${formatDate(getRecipe.createdDate)}`}
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>

@@ -54,6 +54,17 @@ exports.resolvers = {
         });
         return recipes;
       }
+    },
+
+    getRecipesByUser: async (root, {}, { Recipe, currentUser }) => {
+      if (currentUser) {
+        const foundRecipes = await Recipe.find({
+          username: currentUser.username
+        });
+        return foundRecipes;
+      }
+
+      throw new Error("not logged user");
     }
   },
   Mutation: {

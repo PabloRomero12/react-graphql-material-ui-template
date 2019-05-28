@@ -8,6 +8,9 @@ export const GET_ALL_RECIPES = gql`
       _id
       name
       category
+      likes
+      picture
+      description
     }
   }
 `;
@@ -31,6 +34,18 @@ export const GET_RECIPE = gql`
 export const SEARCH_RECIPES = gql`
   query($searchTerm: String) {
     searchRecipes(searchTerm: $searchTerm) {
+      _id
+      name
+      description
+      picture
+      likes
+    }
+  }
+`;
+
+export const GET_RECIPES_BY_USER = gql`
+  query {
+    getRecipesByUser {
       _id
       name
       description
@@ -72,6 +87,10 @@ export const GET_CURRENT_USER = gql`
       username
       joinedDate
       email
+      favorites {
+        _id
+        name
+      }
     }
   }
 `;

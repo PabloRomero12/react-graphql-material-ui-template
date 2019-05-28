@@ -13,10 +13,15 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
 import Error from "../Auth/Error";
+import withAuth from "../withAuth";
 
 import { Mutation } from "react-apollo";
 
-import { ADD_RECIPE, GET_ALL_RECIPES } from "../../queries";
+import {
+  ADD_RECIPE,
+  GET_ALL_RECIPES,
+  GET_RECIPES_BY_USER
+} from "../../queries";
 
 const styles = theme => ({
   appBar: {
@@ -120,14 +125,32 @@ class AddRecipe extends React.Component {
   };
 
   updateCache = (proxy, { data: { addRecipe } }) => {
-    const { getAllRecipes } = proxy.readQuery({ query: GET_ALL_RECIPES });
+    try {
+      const { getAllRecipes } = proxy.readQuery({ query: GET_ALL_RECIPES });
 
-    proxy.writeQuery({
-      query: GET_ALL_RECIPES,
-      data: {
-        getAllRecipes: [addRecipe, ...getAllRecipes]
-      }
-    });
+      proxy.writeQuery({
+        query: GET_ALL_RECIPES,
+        data: {
+          getAllRecipes: [addRecipe, ...getAllRecipes]
+        }
+      });
+    } catch (err) {
+      console.log("not in cache");
+    }
+
+    try {
+      const { getRecipesByUser } = proxy.readQuery({
+        query: GET_RECIPES_BY_USER
+      });
+      proxy.writeQuery({
+        query: GET_RECIPES_BY_USER,
+        data: {
+          getRecipesByUser: [addRecipe, ...getRecipesByUser]
+        }
+      });
+    } catch (err) {
+      console.log("not in cache");
+    }
   };
 
   render() {
@@ -261,4 +284,6 @@ AddRecipe.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withRouter(withStyles(styles)(AddRecipe));
+export default withAuth(session => session && session.getCurrentUser)(
+  withRouter(withStyles(styles)(AddRecipe))
+);

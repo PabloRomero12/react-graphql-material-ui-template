@@ -28,6 +28,8 @@ type Query{
     getRecipe(_id:ID): Recipe
 
     searchRecipes(searchTerm:String): [Recipe] 
+
+    getRecipesByUser:[Recipe]
 }
 
 type Token{
