@@ -12,6 +12,34 @@ export const GET_ALL_RECIPES = gql`
   }
 `;
 
+export const GET_RECIPE = gql`
+  query($_id: ID) {
+    getRecipe(_id: $_id) {
+      _id
+      name
+      category
+      description
+      instructions
+      picture
+      createdDate
+      likes
+      username
+    }
+  }
+`;
+
+export const SEARCH_RECIPES = gql`
+  query($searchTerm: String) {
+    searchRecipes(searchTerm: $searchTerm) {
+      _id
+      name
+      description
+      picture
+      likes
+    }
+  }
+`;
+
 /* RECIPES MUTATIONS */
 export const ADD_RECIPE = gql`
   mutation(
@@ -61,22 +89,6 @@ export const SIGNIN_USER = gql`
   mutation($username: String!, $password: String!) {
     signinUser(username: $username, password: $password) {
       token
-    }
-  }
-`;
-
-export const GET_RECIPE = gql`
-  query($_id: ID) {
-    getRecipe(_id: $_id) {
-      _id
-      name
-      category
-      description
-      instructions
-      picture
-      createdDate
-      likes
-      username
     }
   }
 `;
