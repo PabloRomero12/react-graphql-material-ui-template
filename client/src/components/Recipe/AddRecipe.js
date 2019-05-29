@@ -20,7 +20,8 @@ import { Mutation } from "react-apollo";
 import {
   ADD_RECIPE,
   GET_ALL_RECIPES,
-  GET_RECIPES_BY_USER
+  GET_RECIPES_BY_USER,
+  GET_CURRENT_USER
 } from "../../queries";
 
 const styles = theme => ({
@@ -137,20 +138,6 @@ class AddRecipe extends React.Component {
     } catch (err) {
       console.log("not in cache");
     }
-
-    try {
-      const { getRecipesByUser } = proxy.readQuery({
-        query: GET_RECIPES_BY_USER
-      });
-      proxy.writeQuery({
-        query: GET_RECIPES_BY_USER,
-        data: {
-          getRecipesByUser: [addRecipe, ...getRecipesByUser]
-        }
-      });
-    } catch (err) {
-      console.log("not in cache");
-    }
   };
 
   render() {
@@ -168,6 +155,10 @@ class AddRecipe extends React.Component {
               category: this.state.category,
               instructions: this.state.instructions
             }}
+            refetchQueries={() => [
+              { query: GET_CURRENT_USER },
+              { query: GET_RECIPES_BY_USER }
+            ]}
             update={this.updateCache}
           >
             {(addRecipe, { data, loading, error }) => {

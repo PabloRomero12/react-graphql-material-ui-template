@@ -84,6 +84,20 @@ exports.resolvers = {
 
       return newRecipe;
     },
+    deleteUserRecipe: async (
+      parent,
+      { _id, username },
+      { Recipe, currentUser }
+    ) => {
+      if (currentUser.username === username) {
+        const deleteRecipe = await Recipe.findOneAndRemove({ _id });
+
+        return deleteRecipe;
+      }
+
+      throw new Error("User not authenticated");
+    },
+
     signupUser: async (parent, { username, email, password }, { User }) => {
       const user = await User.findOne({ username });
       if (user) {

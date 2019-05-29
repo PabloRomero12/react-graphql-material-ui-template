@@ -7,7 +7,7 @@ import withAuth from "../withAuth";
 const Profile = ({ session }) => (
   <div>
     <UserInfo session={session} />
-    <UserRecipes />
+    <UserRecipes session={session} />
   </div>
 );
 
