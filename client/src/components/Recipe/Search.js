@@ -11,9 +11,10 @@ import GridListTile from "@material-ui/core/GridListTile";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import InfoIcon from "@material-ui/icons/Info";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import { ApolloConsumer } from "react-apollo";
+
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import { SEARCH_RECIPES } from "../../queries";
 

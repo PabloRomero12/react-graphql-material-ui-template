@@ -45,7 +45,7 @@ const UserInfo = ({ classes, session: { getCurrentUser } }) => (
         className={classes.root}
       >
         {getCurrentUser.favorites.map(fav => (
-          <ListItem>{fav.name}</ListItem>
+          <ListItem key={fav._id}>{fav.name}</ListItem>
         ))}
       </List>
       {!getCurrentUser.favorites.length && (

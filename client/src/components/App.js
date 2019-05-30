@@ -12,8 +12,8 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import InfoIcon from "@material-ui/icons/Info";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import IconButton from "@material-ui/core/IconButton";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const styles = theme => ({
   root: {

@@ -48,6 +48,8 @@ type Mutation{
 
     deleteUserRecipe(_id:ID!,username:String!):Recipe
 
+    likeRecipe(_id:ID!,username:String!):Recipe
+
     signupUser(
         username:String!
         email:String!

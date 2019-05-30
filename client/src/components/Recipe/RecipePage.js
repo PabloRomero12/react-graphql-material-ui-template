@@ -10,10 +10,11 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import red from "@material-ui/core/colors/red";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 
 import { GET_RECIPE } from "../../queries";
+
+import LikeRecipe from "../Recipe/LikeRecipe";
 
 const styles = theme => ({
   root: {
@@ -44,7 +45,8 @@ const styles = theme => ({
   },
   avatar: {
     backgroundColor: red[500]
-  }
+  },
+  inlineIcons: {}
 });
 
 const formatDate = date => {
@@ -103,10 +105,14 @@ class RecipePage extends React.Component {
                       </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                      <IconButton aria-label="Add to favorites">
-                        <FavoriteIcon />
-                      </IconButton>
-                      <IconButton aria-label="Share">
+                      <div className={classes.inlineIcons}>
+                        <LikeRecipe recipe={getRecipe} />
+                        {getRecipe.likes}
+                      </div>
+                      <IconButton
+                        aria-label="Share"
+                        className={classes.inlineIcons}
+                      >
                         <ShareIcon />
                       </IconButton>
                     </Grid>
