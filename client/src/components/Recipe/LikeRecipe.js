@@ -7,7 +7,7 @@ import { Mutation } from "react-apollo";
 
 import withSession from "../withSession";
 
-import { LIKE_RECIPE, GET_RECIPE } from "../../queries";
+import { LIKE_RECIPE, UNLIKE_RECIPE, GET_RECIPE } from "../../queries";
 
 class LikeRecipe extends React.Component {
   state = {
@@ -25,18 +25,18 @@ class LikeRecipe extends React.Component {
     }
   }
 
-  handleClick = likeRecipe => {
+  handleClick = (likeRecipe, unlikeRecipe) => {
     this.setState(
       prevState => ({
         liked: !prevState.liked
       }),
       () => {
-        this.handleLike(likeRecipe);
+        this.handleLike(likeRecipe, unlikeRecipe);
       }
     );
   };
 
-  handleLike = likeRecipe => {
+  handleLike = (likeRecipe, unlikeRecipe) => {
     if (!this.state.liked) {
       likeRecipe()
         .then(async ({ data }) => {
@@ -44,7 +44,11 @@ class LikeRecipe extends React.Component {
         })
         .catch(err => console.log(err));
     } else {
-      console.log("unlike");
+      unlikeRecipe()
+        .then(async ({ data }) => {
+          await this.props.refetch();
+        })
+        .catch(err => console.log(err));
     }
   };
 
@@ -68,27 +72,55 @@ class LikeRecipe extends React.Component {
     }
   };
 
+  updateUnlike = (proxy, { data: { unlikeRecipe } }) => {
+    try {
+      const { recipe } = this.props;
+      const { getRecipe } = proxy.readQuery({
+        query: GET_RECIPE,
+        variables: { _id: recipe._id }
+      });
+
+      proxy.writeQuery({
+        query: GET_RECIPE,
+        variables: { _id: recipe._id },
+        data: {
+          getRecipe: { ...getRecipe, likes: unlikeRecipe.likes - 1 }
+        }
+      });
+    } catch (err) {
+      console.log("error");
+    }
+  };
+
   render() {
     const { username } = this.state;
     const { recipe } = this.props;
     return (
       <Mutation
-        mutation={LIKE_RECIPE}
+        mutation={UNLIKE_RECIPE}
         variables={{ _id: recipe._id, username: username }}
-        update={this.updateLike}
+        update={this.updateUnlike}
       >
-        {likeRecipe =>
-          username && (
-            <IconButton
-              color={this.state.liked ? "secondary" : "primary"}
-              onClick={() => {
-                this.handleClick(likeRecipe);
-              }}
-            >
-              <FavoriteIcon />
-            </IconButton>
-          )
-        }
+        {unlikeRecipe => (
+          <Mutation
+            mutation={LIKE_RECIPE}
+            variables={{ _id: recipe._id, username: username }}
+            update={this.updateLike}
+          >
+            {likeRecipe =>
+              username && (
+                <IconButton
+                  color={this.state.liked ? "secondary" : "primary"}
+                  onClick={() => {
+                    this.handleClick(likeRecipe, unlikeRecipe);
+                  }}
+                >
+                  <FavoriteIcon />
+                </IconButton>
+              )
+            }
+          </Mutation>
+        )}
       </Mutation>
     );
   }

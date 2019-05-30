@@ -117,6 +117,26 @@ exports.resolvers = {
 
       throw new Error("User not authenticated");
     },
+    unlikeRecipe: async (
+      parent,
+      { _id, username },
+      { currentUser, Recipe, User }
+    ) => {
+      if (currentUser.username === username) {
+        const recipe = await Recipe.findOneAndUpdate(
+          { _id },
+          { $inc: { likes: -1 } }
+        );
+        const user = await User.findOneAndUpdate(
+          { username },
+          { $pull: { favorites: _id } }
+        );
+
+        return recipe;
+      }
+
+      throw new Error("User not authenticated");
+    },
 
     signupUser: async (parent, { username, email, password }, { User }) => {
       const user = await User.findOne({ username });
