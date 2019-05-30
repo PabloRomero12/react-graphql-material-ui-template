@@ -29,7 +29,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({
-  uri: "http://localhost:4444/graphql",
+  uri: "http://recipes-tutorial.heroku-app.com/graphql",
   fetchOptions: {
     credentials: "include"
   },
